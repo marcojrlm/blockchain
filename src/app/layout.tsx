@@ -25,9 +25,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-      </body>
+    <head>
+      <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete"/>
+      <title>BlockChain</title>
+    </head>
+    <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    {children}
+    </body>
     </html>
   );
 }
