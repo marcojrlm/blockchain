@@ -3,6 +3,8 @@ import * as S from "@/styles";
 import {useForm} from "react-hook-form";
 import Block, {IBlock} from "@/app/components/Block";
 import Skeleton from "@/app/components/Skeleton";
+import {Title} from "@/styles";
+import Mining from "@/app/components/Mining";
 
 const Blockchain = () => {
     const {register, handleSubmit, reset} = useForm<{ data: string }>();
@@ -78,54 +80,43 @@ const Blockchain = () => {
     }
 
     return (
-        <S.Blockchain>
-            <>
-                <S.Trash className="material-symbols-outlined" onClick={() => deleteBlockChain()}
-                         title='Deletar blockchain'>
-                    delete
-                </S.Trash>
-                {
-                    blockchain && blockchain.length >= 0 &&
-                    blockchain.map((block, index) => {
-                        return (
-                            <Block key={index} block={block}
-                                   isInvalidBlock={(invalidBlockIndex !== undefined && block.id >= invalidBlockIndex)}
-                                   validateChain={validateChain}/>
-                        )
-                    })
-                }
+        <S.App>
+            <S.Title>Blockchain by marco</S.Title>
+            <S.Blockchain>
+                <>
+                    <S.Trash className="material-symbols-outlined" onClick={() => deleteBlockChain()}
+                             title='Deletar blockchain'>
+                        delete
+                    </S.Trash>
+                    {
+                        blockchain && blockchain.length >= 0 &&
+                        blockchain.map((block, index) => {
+                            return (
+                                <>
+                                    <Block key={index} block={block}
+                                           isInvalidBlock={(invalidBlockIndex !== undefined && block.id >= invalidBlockIndex)}
+                                           validateChain={validateChain}/>
+
+                                </>
+                            )
+                        })
+                    }
+                    {
+                        isMining &&
+                        <Mining/>
+                    }
+                </>
+            </S.Blockchain>
+            <S.Form onSubmit={handleSubmit(onSubmit)}>
                 <S.Block>
-                    <S.Form onSubmit={handleSubmit(onSubmit)}>
-                        {
-                            isMining ?
-                                <>
-                                    <p>Mining...</p>
-                                    <S.Row>
-                                        <S.Label>Nonce</S.Label>
-                                        <Skeleton/>
-                                    </S.Row>
-
-                                    <S.Row>
-                                        <S.Label>Data</S.Label>
-                                        <Skeleton/>
-                                    </S.Row>
-
-                                    <S.Row>
-                                        <S.Label>Hash</S.Label>
-                                        <Skeleton/>
-                                    </S.Row>
-                                </>
-                                :
-                                <>
-                                    <p>New block</p>
-                                    <S.Input placeholder='data' {...register('data')} autoFocus={true}/>
-                                    <S.Button type="submit">Mine</S.Button>
-                                </>
-                        }
-                    </S.Form>
+                    <S.Column>
+                        <p>New block</p>
+                        <S.Input placeholder='data' {...register('data')} autoFocus={true}/>
+                        <S.Button type="submit">Add</S.Button>
+                    </S.Column>
                 </S.Block>
-            </>
-        </S.Blockchain>
+            </S.Form>
+        </S.App>
     );
 };
 

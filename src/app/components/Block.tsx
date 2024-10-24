@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import * as S from "@/styles";
 import {useForm} from "react-hook-form";
+import Mining from "@/app/components/Mining";
 
 const Block = ({block, validateChain, isInvalidBlock}: {
     block: IBlock,
@@ -16,6 +17,7 @@ const Block = ({block, validateChain, isInvalidBlock}: {
         }
     });
     const [isMounted, setIsMounted] = useState(false);
+    const [isMining, setIsMining] = useState(false);
     const baseUrl = process.env.BASE_URL || 'http://localhost:8080/api/blockchain';
     const nonceWatch = watch('nonce');
     const dataWatch = watch('data');
@@ -53,6 +55,7 @@ const Block = ({block, validateChain, isInvalidBlock}: {
     async function onSubmit(data: IBlock) {
         data.id = block.id;
         try {
+            setIsMining(true);
             const request = await fetch(baseUrl + '/mine', {
                 method: 'PUT',
                 headers: {
@@ -67,39 +70,41 @@ const Block = ({block, validateChain, isInvalidBlock}: {
             await validateChain()
         } catch (error) {
             console.warn(error);
+        } finally {
+            setIsMining(false);
         }
     }
 
     return (
-        <S.Block isInvalidBlock={isInvalidBlock}>
-            <S.Form onSubmit={handleSubmit(onSubmit)}>
-                <p>{block.id !== 0 ? 'Bloco ' + block.id : 'Genesis block'}</p>
-                <S.Row>
-                    <S.Label>Nonce</S.Label>
-                    <S.Input placeholder='nonce' type='number' {...register('nonce')}
-                    />
-                </S.Row>
+        !isMining ?
+            <S.Block isInvalidBlock={isInvalidBlock}>
+                <S.Form onSubmit={handleSubmit(onSubmit)}>
+                    <p>{block.id !== 0 ? 'Bloco ' + block.id : 'Genesis block'}</p>
+                    <S.Column>
+                        <S.Label>Nonce</S.Label>
+                        <S.Input placeholder='nonce' type='number' {...register('nonce')}/>
+                    </S.Column>
 
-                <S.Row>
-                    <S.Label>Data</S.Label>
-                    <S.Input placeholder='data' {...register('data')} />
-                </S.Row>
+                    <S.Column>
+                        <S.Label>Data</S.Label>
+                        <S.Input placeholder='data' {...register('data')} />
+                    </S.Column>
 
-                <S.Row>
-                    <S.Label>Hash</S.Label>
-                    <S.Input placeholder='hash' $block={true}  {...register('hash')}/>
-                </S.Row>
+                    <S.Column>
+                        <S.Label>Hash</S.Label>
+                        <S.Input placeholder='hash' $block={true}  {...register('hash')}/>
+                    </S.Column>
 
-                <S.Row>
-                    <S.Label>previousHash</S.Label>
-                    <S.Input placeholder='previousHash' $block={true}
-                             {...register('previousHash')}/>
-                </S.Row>
+                    <S.Column>
+                        <S.Label>previousHash</S.Label>
+                        <S.Input placeholder='previousHash' $block={true} {...register('previousHash')}/>
+                    </S.Column>
 
-                <S.Button type="submit">Mine</S.Button>
-            </S.Form>
-        </S.Block>
-    );
+                    <S.Button type="submit">Mine</S.Button>
+                </S.Form>
+            </S.Block>
+            : <Mining/>
+    )
 };
 
 export default Block;

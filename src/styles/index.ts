@@ -3,24 +3,22 @@ import styled from 'styled-components';
 export const Block = styled.div.withConfig({
     shouldForwardProp: (prop) => prop !== 'isInvalidBlock',
 })<{ isInvalidBlock?: boolean }>`
-    width: 50vw;
-    background: ${props => props?.isInvalidBlock ? 'red' : "#086788"};
+    background: ${props => props?.isInvalidBlock ? '#d93030' : "#3066b8"};
     padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
     margin: auto;
-    border-radius: .5rem;
+    border-radius: .2rem;
+    width: 100%;
 `;
 
 export const Blockchain = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 5rem auto;
-    justify-content: center;
-    align-content: center;
-    gap: 5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 2rem;
+    width: 90dvw;
 `;
 
 export const Input = styled.input<{ $block?: boolean }>`
@@ -43,7 +41,7 @@ export const Input = styled.input<{ $block?: boolean }>`
 `;
 
 export const Button = styled.button`
-    background: #03254E;
+    background: #2f3036;
     padding: .8rem;
     color: #FFF;
     outline: none;
@@ -59,8 +57,17 @@ export const Row = styled.div`
     gap: 1rem;
 `
 
+export const Column = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+`
+
 export const Label = styled.label`
-    width: 25%;
+    font-size: .8rem;
+    text-align: left;
+    width: 100%;
 `
 
 export const Form = styled.form`
@@ -97,6 +104,20 @@ export const Skeleton = styled.div`
             left: 100%;
         }
     }
+`;
+
+export const Title = styled.h1`
+    color: #FFF;
+    text-align: center;
+    width: 100%;
+`;
+
+export const App = styled.div`
+    max-width: 90dvw;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 `;
 
 export const Trash = styled.span`
