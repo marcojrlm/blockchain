@@ -101,21 +101,23 @@ const Blockchain = () => {
                             )
                         })
                     }
+                    {!isMining &&
+                        <S.Form onSubmit={handleSubmit(onSubmit)}>
+                            <S.Block>
+                                <S.Column>
+                                    <p>New block</p>
+                                    <S.Input placeholder='data' {...register('data')} autoFocus={true}/>
+                                    <S.Button type="submit">Add</S.Button>
+                                </S.Column>
+                            </S.Block>
+                        </S.Form>
+                    }
                     {
                         isMining &&
                         <Mining/>
                     }
                 </>
             </S.Blockchain>
-            <S.Form onSubmit={handleSubmit(onSubmit)}>
-                <S.Block>
-                    <S.Column>
-                        <p>New block</p>
-                        <S.Input placeholder='data' {...register('data')} autoFocus={true}/>
-                        <S.Button type="submit">Add</S.Button>
-                    </S.Column>
-                </S.Block>
-            </S.Form>
         </S.App>
     );
 };
